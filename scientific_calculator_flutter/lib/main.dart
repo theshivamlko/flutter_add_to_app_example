@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:scientific_calculator_flutter/plugins.dart';
 
@@ -63,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             Text(
-              "Input: $inputUnit",
+              "Input: $inputUnit (Kg)",
               style: TextStyle(fontSize: 25),
             ),
             Padding(padding: EdgeInsets.all(10)),
@@ -89,13 +91,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Padding(padding: EdgeInsets.all(10)),
             Text(
-              "Output: $result",
-              style: TextStyle(fontSize: 25),
+              "Output: $selectedPlanet -> $result (Kg)",
+              style: const TextStyle(fontSize: 25),
             ),
 
             Padding(padding: EdgeInsets.all(10)),
             ElevatedButton(onPressed: () {
-
+              sendToNativeCall(jsonEncode({"planet":selectedPlanet,"weight":result}));
             }, child: const Text("Send Result to Native"))
 
 

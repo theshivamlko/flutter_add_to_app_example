@@ -2,6 +2,7 @@ package com.example.unitconvertor
 
 import android.content.Context
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,12 +34,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.unitconvertor.ui.theme.UnitConvertorTheme
+import org.json.JSONObject
 
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             UnitConvertorTheme {
+
+
                 // A surface container using the 'background' color from the theme
                 Surface(
                     //  modifier = Modifier.fillMaxSize(),
@@ -58,11 +65,24 @@ var listOfWeightUnits: List<String> = listOf("Kilogram", "Gram", "Pound", "Ounce
 fun Greeting(name: String) {
     var inputUnit by remember { mutableStateOf("100") }
     var result by remember { mutableStateOf("") }
-    var convertFromUnit by remember { mutableStateOf("") }
-    var convertToUnit by remember { mutableStateOf("") }
+    var resultFromPlanets by remember { mutableStateOf("") }
+    var convertFromUnit by remember { mutableStateOf(listOfWeightUnits.first()) }
+    var convertToUnit by remember { mutableStateOf(listOfWeightUnits.first()) }
 
     var context= LocalContext.current
-    println("Greeting ")
+
+
+
+    LaunchedEffect(Unit) {
+        // Call the fetchData function when the screen is first launched
+        FlutterInstance.receiveResultsFromFlutter {
+            var json =JSONObject(it)
+
+            resultFromPlanets="${json.getString("result")} ${json.getString("weight")
+        }
+    }
+
+    println("Greeting")
     // var value by remember { mutableStateOf("") }
 
 

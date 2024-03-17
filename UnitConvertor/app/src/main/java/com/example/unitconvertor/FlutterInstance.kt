@@ -34,10 +34,33 @@ class FlutterInstance {
                 }
 
 
+
+
             } catch (e: Exception) {
                 println("ConvertApp openScientificCalculator error ${e.message}")
                 e.printStackTrace()
             }
+
+        }
+
+
+
+        fun receiveResultsFromFlutter(onReceive:(String)->Unit){
+            val methodChannel = MethodChannel(
+                AppSingleton.flutterEngine.dartExecutor.binaryMessenger,
+                FLUTTER_CHANNEL
+            )
+
+            methodChannel.setMethodCallHandler{
+                call, result ->
+                if(call.method=="receiveResultsFromFlutter"){
+                    print("ConvertApp receiveResultsFromFlutter ${result} ${call.arguments}")
+                    val data=call.arguments as String
+                    onReceive(data)
+                }
+            }
+
+
 
         }
     }
