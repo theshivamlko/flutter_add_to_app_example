@@ -14,18 +14,27 @@ class FlutterInstance {
 
 
         fun openScientificCalculatorScreen( unit:String, context: Context) {
-            val json=JSONObject()
-            json.put("unit",unit)
+            try {
+                val json = JSONObject()
+                json.put("unit", unit)
+                println("ConvertApp openScientificCalculator1 $json")
 
-            val methodChannel= MethodChannel(
-                AppSingleton.flutterEngine.dartExecutor.binaryMessenger,
-                FLUTTER_CHANNEL
-            )
+                val methodChannel = MethodChannel(
+                    AppSingleton.flutterEngine.dartExecutor.binaryMessenger,
+                    FLUTTER_CHANNEL
+                )
 
-            methodChannel.invokeMethod("calculateWeightOnPlanets",json.toString())
+                context.startActivity(
+                    FlutterActivity.withCachedEngine(AppSingleton.FLUTTER_ENGINE_NAME)
+                        .build(context)
+                )
 
-            context.startActivity(
-                FlutterActivity.withCachedEngine(AppSingleton.FLUTTER_ENGINE_NAME).build(context))
+
+                methodChannel.invokeMethod("calculateWeightOnPlanets", json.toString())
+            } catch (e: Exception) {
+                println("ConvertApp openScientificCalculator error ${e.message}")
+                e.printStackTrace()
+            }
 
         }
     }

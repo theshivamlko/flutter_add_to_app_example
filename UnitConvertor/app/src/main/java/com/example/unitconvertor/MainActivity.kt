@@ -224,6 +224,6 @@ fun convertUnit(value: Double, originalUnit: String, targetUnit: String): Double
 
 
 fun openScientificCalculator(  inputUnit:String,context:Context) {
-    println("openScientificCalculator")
+    println("ConvertApp openScientificCalculator")
     FlutterInstance.openScientificCalculatorScreen(inputUnit, context)
 }

@@ -15,10 +15,10 @@ void listenFromNativeCall({required ValueChanged<String> onValueReceived}) {
 void receiveFromNativeCall(
     {required MethodCall methodCall,
     required ValueChanged<String> onValueReceived}) {
-  print("receiveFromNativeCall ${methodCall.method}");
+  print("ConvertApp receiveFromNativeCall ${methodCall.method}");
   if (methodCall.method == "calculateWeightOnPlanets") {
     String args = methodCall.arguments;
-    print("receiveFromNativeCall args ${args}");
+    print("ConvertApp receiveFromNativeCall args ${args}");
     Map<String, dynamic> map = json.decode(args);
 
     String unit = map["unit"];
