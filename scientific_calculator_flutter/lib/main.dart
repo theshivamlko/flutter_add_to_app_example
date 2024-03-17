@@ -44,6 +44,11 @@ class _MyHomePageState extends State<MyHomePage> {
       onValueReceived: (value) {
         print("listenFromNativeCall $value");
         inputUnit=double.parse(value);
+        result = calculateWeightOnPlanets(
+            inputUnit, selectedPlanet);
+        setState(() {
+
+        });
       },
     );
   }

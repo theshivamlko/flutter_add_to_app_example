@@ -56,7 +56,7 @@ var listOfWeightUnits: List<String> = listOf("Kilogram", "Gram", "Pound", "Ounce
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Greeting(name: String) {
-    var inputUnit by remember { mutableStateOf("") }
+    var inputUnit by remember { mutableStateOf("100") }
     var result by remember { mutableStateOf("") }
     var convertFromUnit by remember { mutableStateOf("") }
     var convertToUnit by remember { mutableStateOf("") }

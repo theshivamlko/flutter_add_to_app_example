@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 
 const platform =
-    const MethodChannel("com.example.scientific_calculator_flutter.host");
+    const MethodChannel("com.example.scientific_calculator_flutter");
 
 void listenFromNativeCall({required ValueChanged<String> onValueReceived}) {
   platform.setMethodCallHandler((MethodCall methodCall) async {

@@ -27,10 +27,13 @@ class FlutterInstance {
                 context.startActivity(
                     FlutterActivity.withCachedEngine(AppSingleton.FLUTTER_ENGINE_NAME)
                         .build(context)
-                )
+                ).apply {
+                    println("ConvertApp openScientificCalculator apply ${this}")
+                    methodChannel.invokeMethod("calculateWeightOnPlanets", json.toString())
+
+                }
 
 
-                methodChannel.invokeMethod("calculateWeightOnPlanets", json.toString())
             } catch (e: Exception) {
                 println("ConvertApp openScientificCalculator error ${e.message}")
                 e.printStackTrace()
