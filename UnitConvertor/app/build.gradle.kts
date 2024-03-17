@@ -28,6 +28,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+
+        create("profile"){
+            initWith(getByName("debug"))
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -49,6 +53,10 @@ android {
     }
 }
 
+configurations{
+    getByName("profileImplementation")
+}
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -66,4 +74,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+
+    debugImplementation("com.example.scientific_calculator_flutter:flutter_debug:1.0")
+    releaseImplementation("com.example.scientific_calculator_flutter:flutter_release:1.0")
+    add("profileImplementation","com.example.scientific_calculator_flutter:flutter_profile:1.0")
 }

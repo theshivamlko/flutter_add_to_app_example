@@ -1,19 +1,13 @@
 package com.example.unitconvertor
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -30,12 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.unitconvertor.ui.theme.UnitConvertorTheme
@@ -63,11 +56,12 @@ var listOfWeightUnits: List<String> = listOf("Kilogram", "Gram", "Pound", "Ounce
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Greeting(name: String) {
-    var value by remember { mutableStateOf("") }
+    var inputUnit by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
     var convertFromUnit by remember { mutableStateOf("") }
     var convertToUnit by remember { mutableStateOf("") }
 
+    var context= LocalContext.current
     println("Greeting ")
     // var value by remember { mutableStateOf("") }
 
@@ -78,8 +72,8 @@ fun Greeting(name: String) {
         ) {
 
         TextField(
-            value = value,
-            onValueChange = { value = it },
+            value = inputUnit,
+            onValueChange = { inputUnit = it },
             label = { Text("Enter value") },
             maxLines = 2,
             enabled = true, keyboardOptions = KeyboardOptions(
@@ -94,7 +88,7 @@ fun Greeting(name: String) {
             println("DropDown1 $it")
             convertFromUnit = it
             if (convertToUnit.isNotEmpty() && convertFromUnit.isNotEmpty()) {
-                val res = convertUnit(value.toDouble(), convertFromUnit, convertToUnit)
+                val res = convertUnit(inputUnit.toDouble(), convertFromUnit, convertToUnit)
                 result = res.toString(); }
         })
 
@@ -104,14 +98,14 @@ fun Greeting(name: String) {
             println("DropDown2 $it")
             convertToUnit = it
             if (convertToUnit.isNotEmpty() && convertFromUnit.isNotEmpty()) {
-                val res = convertUnit(value.toDouble(), convertFromUnit, convertToUnit)
+                val res = convertUnit(inputUnit.toDouble(), convertFromUnit, convertToUnit)
                 result = res.toString()
             }
         })
 
 
         Text(
-            text = "Result: \n $value $convertFromUnit \n" +
+            text = "Result: \n $inputUnit $convertFromUnit \n" +
                     "$result $convertToUnit ", modifier = Modifier.padding(20.dp),
             style = TextStyle(color = Color.Blue, fontWeight = FontWeight.Bold, fontSize = 30.sp)
         )
@@ -121,7 +115,7 @@ fun Greeting(name: String) {
         Button(
             modifier = Modifier.padding(vertical = 90.dp),
             onClick = {
-                openScientificCalculator()
+                openScientificCalculator(inputUnit, context)
 
             }) {
             Text(text = "Open Scientific Calculator")
@@ -229,7 +223,7 @@ fun convertUnit(value: Double, originalUnit: String, targetUnit: String): Double
 
 
 
-fun openScientificCalculator() {
+fun openScientificCalculator(  inputUnit:String,context:Context) {
     println("openScientificCalculator")
-
+    FlutterInstance.openScientificCalculatorScreen(inputUnit, context)
 }
