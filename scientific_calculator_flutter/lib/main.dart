@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scientific_calculator_flutter/plugins.dart';
 
 void main() => runApp(const MyApp());
 
@@ -31,8 +32,21 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> planetList = ["Moon", "Jupiter", "Mars"];
 
   String selectedPlanet = "Moon";
-  String unit = "";
+  double inputUnit = 0.0;
   String result = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    listenFromNativeCall(
+      onValueReceived: (value) {
+        print("listenFromNativeCall $value");
+        inputUnit=double.parse(value);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             Text(
-              "Input: $unit",
+              "Input: $inputUnit",
               style: TextStyle(fontSize: 25),
             ),
             Padding(padding: EdgeInsets.all(10)),
@@ -52,15 +66,19 @@ class _MyHomePageState extends State<MyHomePage> {
               items: planetList.map((String planet) {
                 return DropdownMenuItem<String>(
                   value: planet,
-                  child: Text(planet,style: TextStyle(fontSize: 20),),
+                  child: Text(
+                    planet,
+                    style: TextStyle(fontSize: 20),
+                  ),
                 );
               }).toList(),
               value: selectedPlanet,
               onChanged: (String? value) {
                 setState(() {
-                  selectedPlanet=value!;
-                result=  calculateWeightOnPlanets(double.parse(unit), selectedPlanet);
+                  selectedPlanet = value!;
 
+                  result = calculateWeightOnPlanets(
+                      inputUnit, selectedPlanet);
                 });
               },
             ),
@@ -68,32 +86,36 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               "Output: $result",
               style: TextStyle(fontSize: 25),
-            )
+            ),
+
+            Padding(padding: EdgeInsets.all(10)),
+            ElevatedButton(onPressed: () {
+
+            }, child: const Text("Send Result to Native"))
+
+
           ],
         ),
       ),
     );
   }
 
-
   String calculateWeightOnPlanets(double weightOnEarth, String selectedPlanet) {
-
-      double weightOnPlanet;
-      switch ( selectedPlanet) {
-        case "Moon":
-          weightOnPlanet = weightOnEarth * 0.165;
-          break;
-        case "Jupiter":
-          weightOnPlanet = weightOnEarth * 2.354;
-          break;
-        case "Mars":
-          weightOnPlanet = weightOnEarth * 0.376;
-          break;
-        default:
-          throw Exception("Unsupported planet: $selectedPlanet");
-      }
+    double weightOnPlanet;
+    switch (selectedPlanet) {
+      case "Moon":
+        weightOnPlanet = weightOnEarth * 0.165;
+        break;
+      case "Jupiter":
+        weightOnPlanet = weightOnEarth * 2.354;
+        break;
+      case "Mars":
+        weightOnPlanet = weightOnEarth * 0.376;
+        break;
+      default:
+        throw Exception("Unsupported planet: $selectedPlanet");
+    }
 
     return weightOnPlanet.toString();
   }
-
 }
